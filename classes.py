@@ -1,6 +1,8 @@
-from util import is_numeric
+from util import is_numeric, get_label_count
 
 class Question:
+    __slots__ = ['column', 'value']
+
     def __init__(self, column, value):
         self.column = column
         self.value = value
@@ -19,3 +21,19 @@ class Question:
             return val >= self.value
         else:
             return val == self.value
+
+
+class Leaf:
+    __slots__ = ['rows']
+
+    def __init__(self, rows):
+        self.predictions = get_label_count(rows)
+
+
+class DecisionNode:
+    __slots__ = ['question', 'true_branch', 'false_branch']
+
+    def __init__(self, question, true_branch, false_branch):
+        self.question = question
+        self.true_branch = true_branch
+        self.false_branch = false_branch
