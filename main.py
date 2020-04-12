@@ -12,4 +12,3 @@ try:
     print_tree(node)
 except Exception as e:
     print(e)
-

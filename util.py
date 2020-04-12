@@ -135,7 +135,7 @@ def build_tree(rows: list) -> DecisionNode or Leaf:
     true_rows, false_rows = partition(rows, question)
     false_branch = build_tree(false_rows)
     true_branch = build_tree(true_rows)
-    return DecisionNode(question, true_branch, false_branch)
+    return DecisionNode(question, rows, true_branch, false_branch)
 
 
 def get_tabs(n):

@@ -69,12 +69,13 @@ class Leaf:
 
 
 class DecisionNode:
-    __slots__ = ['question', 'true_branch', 'false_branch']
+    __slots__ = ['question', 'predictions', 'true_branch', 'false_branch']
 
-    def __init__(self, question, true_branch, false_branch):
+    def __init__(self, question, rows, true_branch, false_branch):
         self.question = question
+        self.predictions = get_label_count(rows)
         self.true_branch = true_branch
         self.false_branch = false_branch
 
     def __str__(self):
-        return str(self.question)
+        return f'{str(self.question)} {str(self.predictions)}'
