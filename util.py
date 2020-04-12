@@ -61,3 +61,25 @@ def get_info_gain(false_rows: list, true_rows: list, current_uncertainity: float
     p = len(false_rows) / (len(false_rows) + len(true_rows))
     info_gain = current_uncertainity - (p * get_gini_impurity(false_rows) + (1 - p) * get_gini_impurity(true_rows))
     return info_gain
+
+
+def predict(predictions: dict) -> list:
+    """
+    Predict the class using the key with highest value
+    :param predictions: Dictionary of label and its count
+    :type predictions: dict
+    :return: List of possible predictions
+    :rtype: list
+    """
+    best_count = 0
+    result = []
+    for label in predictions:
+        if predictions[label] > best_count:
+            result.clear()
+            result.append(label)
+            best_count = predictions[label]
+        elif predictions[label] == best_count:
+            result.append(label)
+    return result
+
+

@@ -1,14 +1,10 @@
-from class_util import build_tree, print_tree
+from reader import get_training_data
+from class_util import build_tree, print_tree, classify
 
-
-try:
-    data_set_file = open('dataset.txt', 'r')
-    lines = data_set_file.readlines()
-    training_data = []
-    for line in lines:
-        training_data.append(line.replace('\n', '').split(' '))
-
+if __name__ == '__main__':
+    training_data = get_training_data('dataset.txt', ' ')
     node = build_tree(training_data)
     print_tree(node)
-except Exception as e:
-    print(e)
+    example = ["False", "False", "True", "False", "False", "False", "False", "True"]
+    x = classify(example, node)
+    print(f'{str(example)} is one of types {x}')

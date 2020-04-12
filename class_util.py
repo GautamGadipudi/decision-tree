@@ -1,5 +1,5 @@
 from classes import Question, DecisionNode, Leaf
-from util import get_gini_impurity, get_info_gain
+from util import get_gini_impurity, get_info_gain, predict
 
 
 def partition(rows: list, question: Question) -> (list, list):
@@ -117,3 +117,22 @@ def print_tree(node, val='', tabs=0):
     print(align + str(node))
     print_tree(node.true_branch, True, tabs + 1)
     print_tree(node.false_branch, False, tabs + 1)
+
+
+def classify(row, node) -> list:
+    """
+    Classify an example into a class/classes.
+    :param row: Example/testing data
+    :type row: list
+    :param node: Node which has question/prediction
+    :type node: DecisionNode or Leaf
+    :return: List of possible classes
+    :rtype: list
+    """
+    if isinstance(node, Leaf):
+        return predict(node.predictions)
+
+    if node.question.match(row):
+        return classify(row, node.true_branch)
+    else:
+        return classify(row, node.false_branch)
