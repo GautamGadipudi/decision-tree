@@ -1,7 +1,5 @@
-from util import get_gini_impurity
+from util import build_tree, print_tree
 
-def convert_to_bool(string):
-    return string == 'True'
 
 try:
     data_set_file = open('dataset.txt', 'r')
@@ -10,8 +8,8 @@ try:
     for line in lines:
         training_data.append(line.replace('\n', '').split(' '))
 
-    gini_impurity = get_gini_impurity(training_data)
-    print(gini_impurity)
+    node = build_tree(training_data)
+    print_tree(node)
 except Exception as e:
     print(e)
 

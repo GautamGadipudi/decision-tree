@@ -56,16 +56,6 @@ def get_info_gain(false_rows: list, true_rows: list, current_uncertainity: float
     return info_gain
 
 
-def is_numeric(value) -> bool:
-    """
-    Check if a value is of type int or float.
-    :param value: Value whose datatype is to be checked.
-    :return: True if value is of type int or float. False otherwise.
-    :rtype: bool
-    """
-    return isinstance(value, int) or isinstance(value, float)
-
-
 def partition(rows: list, question: Question) -> (list, list):
     """
     Partition given rows into two(true_rows and false_rows) based on the question.
@@ -146,3 +136,22 @@ def build_tree(rows: list) -> DecisionNode or Leaf:
     false_branch = build_tree(false_rows)
     true_branch = build_tree(true_rows)
     return DecisionNode(question, true_branch, false_branch)
+
+
+def get_tabs(n):
+    res = ''
+    for i in range(n):
+        res += '\t'
+    return res
+
+
+def print_tree(node, val='', tabs=0):
+    align = get_tabs(tabs)
+    if isinstance(node, Leaf):
+        print(align + str(val))
+        print(get_tabs(tabs), str(node))
+        return
+    print(align + str(val))
+    print(align + str(node))
+    print_tree(node.true_branch, True, tabs + 1)
+    print_tree(node.false_branch, False, tabs + 1)
