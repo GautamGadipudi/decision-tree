@@ -1,6 +1,7 @@
-from classes import Question
+from classes import Question, Leaf, DecisionNode
 
-def get_gini_impurity(rows) -> list:
+
+def get_gini_impurity(rows: list) -> float:
     """
     Get gini impurity for a list of rows
     The actual label/class must be the last attribute in each item of list
@@ -18,7 +19,7 @@ def get_gini_impurity(rows) -> list:
     return impurity
 
 
-def get_label_count(rows) -> list:
+def get_label_count(rows: list) -> dict:
     """
     Get the count of occurrence of every label in the list of rows
     The actual label/class must be the last attribute in each item of list
@@ -36,7 +37,8 @@ def get_label_count(rows) -> list:
             count[label] += 1
     return count
 
-def get_info_gain(false_rows, true_rows, current_uncertainity):
+
+def get_info_gain(false_rows: list, true_rows: list, current_uncertainity: float) -> float:
     """
     Get a measure of info gained when split as given true rows and false rows.
     :param false_rows: Rows that are false for a particular question.
@@ -54,7 +56,7 @@ def get_info_gain(false_rows, true_rows, current_uncertainity):
     return info_gain
 
 
-def is_numeric(value):
+def is_numeric(value) -> bool:
     """
     Check if a value is of type int or float.
     :param value: Value whose datatype is to be checked.
@@ -64,7 +66,7 @@ def is_numeric(value):
     return isinstance(value, int) or isinstance(value, float)
 
 
-def partition(rows, question):
+def partition(rows: list, question: Question) -> (list, list):
     """
     Partition given rows into two(true_rows and false_rows) based on the question.
     :param rows: Rows to be partitioned.
@@ -85,7 +87,7 @@ def partition(rows, question):
     return true_rows, false_rows
 
 
-def get_best_split(rows):
+def get_best_split(rows: list) -> (float, Question):
     """
     Get the best possible question and best possible info gain for a particular set of rows.
     :param rows: Rows on which to ask a question.
@@ -124,3 +126,23 @@ def get_best_split(rows):
                 best_info_gain, best_question = info_gain, question
 
     return best_info_gain, best_question
+
+
+def build_tree(rows: list) -> DecisionNode or Leaf:
+    """
+    Build the decision tree recursively.
+    :param rows: Training data
+    :type rows: list
+    :return: Node
+    :rtype: DecisionNode or Leaf
+    """
+    info_gain, question = get_best_split(rows)
+
+    # If no info is gained just return a leaf node with remaining rows
+    if info_gain == 0:
+        return Leaf(rows)
+
+    true_rows, false_rows = partition(rows, question)
+    false_branch = build_tree(false_rows)
+    true_branch = build_tree(true_rows)
+    return DecisionNode(question, true_branch, false_branch)
