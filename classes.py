@@ -1,32 +1,5 @@
-# from util import get_label_count
+from util import get_label_count, is_numeric
 
-
-def is_numeric(value) -> bool:
-    """
-    Check if a value is of type int or float.
-    :param value: Value whose datatype is to be checked.
-    :return: True if value is of type int or float. False otherwise.
-    :rtype: bool
-    """
-    return isinstance(value, int) or isinstance(value, float)
-
-def get_label_count(rows: list) -> dict:
-    """
-    Get the count of occurrence of every label in the list of rows
-    The actual label/class must be the last attribute in each item of list
-    :param rows: List of examples from training data
-    :type rows: list
-    :return: Dictionary of label and it's count
-    :rtype: dict
-    """
-    count = {}
-    for row in rows:
-        label = row[-1]
-        if label not in count:
-            count[label] = 1
-        else:
-            count[label] += 1
-    return count
 
 class Question:
     __slots__ = ['column', 'value']
@@ -54,8 +27,6 @@ class Question:
         if is_numeric(self.value):
             comparator = '>='
         return f'{self.column} {comparator} {self.value}?'
-
-
 
 
 class Leaf:

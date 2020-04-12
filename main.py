@@ -1,4 +1,4 @@
-from util import build_tree, print_tree
+from class_util import build_tree, print_tree
 
 
 try:
